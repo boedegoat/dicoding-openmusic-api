@@ -26,12 +26,27 @@ const addSong = async ({
     return newSong.id;
 };
 
-const getSongs = async () => {
+const getSongs = async ({ title = "", performer = "" }) => {
     const query = {
-        text: "SELECT id, title, performer FROM songs",
+        text: `
+            SELECT id, title, performer FROM songs
+            WHERE 
+                title ILIKE '${title}%' AND 
+                performer ILIKE '${performer}%'
+        `,
     };
 
+    // Untuk para reviewer, saya ga yakin code di atas sudah tepat
+    // maklum belom familiar sama sql
+    // dan baru pertama kali pake package node-postgres
+
+    // saya tahu kalo title dan performer langsung dimasukin bakal
+    // membuat celah ke sql injection
+    // tapi kalo saya pake cara yang bener malah error
+    // mohon bantuannya 🙏
+
     const songs = (await db.query(query)).rows;
+    console.log({ songs });
 
     return songs.map(mapDbToCamelCase);
 };

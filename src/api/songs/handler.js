@@ -31,7 +31,9 @@ const postSongHandler = apiWrapper(async (req, h) => {
 });
 
 const getSongsHandler = apiWrapper(async (req, h) => {
-    const songs = await getSongs();
+    const { title, performer } = req.query;
+
+    const songs = await getSongs({ title, performer });
 
     return sendResponse(h, {
         data: {

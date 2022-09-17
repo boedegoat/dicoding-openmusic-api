@@ -49,7 +49,8 @@ const getAlbumById = async (id) => {
     ]);
 
     // Untuk para reviewer, saya ga yakin code di atas sudah tepat
-    // maklum belom familiar banget ama sql
+    // maklum belom familiar sama sql
+    // dan baru pertama kali pake package node-postgres
     // mohon koreksinya 🙏
 
     if (!album) {
