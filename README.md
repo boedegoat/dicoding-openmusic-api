@@ -10,7 +10,20 @@ Sorry jika masih ada kekurangan karena saya masih banyak belajar. Sekian, Terima
 
 ## Langkah menjalankan webserver openmusic api
 
+setup `.env`
+
+```env
+PGHOST=
+PGUSER=
+PGDATABASE=
+PGPASSWORD=
+PGPORT=
+```
+
+kemudian jalankan command ini
+
 ```
 npm i
+npm migrate up
 npm start
 ```

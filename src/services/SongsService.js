@@ -46,7 +46,6 @@ const getSongs = async ({ title = "", performer = "" }) => {
     // mohon bantuannya 🙏
 
     const songs = (await db.query(query)).rows;
-    console.log({ songs });
 
     return songs.map(mapDbToCamelCase);
 };
