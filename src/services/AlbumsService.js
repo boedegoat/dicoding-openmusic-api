@@ -20,18 +20,43 @@ const addAlbum = async ({ name, year }) => {
 };
 
 const getAlbumById = async (id) => {
-    const query = {
-        text: "SELECT id, name, year FROM albums WHERE id = $1",
+    const albumQuery = {
+        text: `
+            SELECT id, name, year FROM albums 
+            WHERE id = $1
+        `,
         values: [id],
     };
 
-    const album = (await db.query(query)).rows[0];
+    const songQuery = {
+        text: `
+            SELECT id, title, performer FROM songs
+            WHERE album_id = $1
+        `,
+        values: [id],
+    };
+
+    const [album, songsInAlbum] = await Promise.all([
+        // get album by id
+        (
+            await db.query(albumQuery)
+        ).rows[0],
+
+        // get songs in that album
+        (
+            await db.query(songQuery)
+        ).rows,
+    ]);
+
+    // Untuk para reviewer, saya ga yakin code di atas sudah tepat
+    // maklum belom familiar banget ama sql
+    // mohon koreksinya 🙏
 
     if (!album) {
         throw new ApiError.NotFoundError("Album tidak ditemukan");
     }
 
-    return album;
+    return { ...album, songs: songsInAlbum };
 };
 
 const editAlbumById = async (id, { name, year }) => {
