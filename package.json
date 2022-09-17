@@ -6,7 +6,10 @@
     "scripts": {
         "dev": "nodemon ./src/server.js",
         "start": "NODE_ENV=production node ./src/server.js",
-        "format-all": "prettier --write ."
+        "prepare": "husky install",
+        "format-all": "prettier --write .",
+        "check-format": "prettier --check .",
+        "check-lint": "eslint . --ext ts --ext tsx --ext js"
     },
     "keywords": [],
     "author": "",
@@ -20,6 +23,7 @@
         "eslint": "^8.23.1",
         "eslint-config-google": "^0.14.0",
         "eslint-config-prettier": "^8.5.0",
+        "husky": "^8.0.1",
         "nodemon": "^2.0.20",
         "prettier": "^2.7.1"
     }
