@@ -18,6 +18,9 @@ const startServer = async () => {
         {
             plugin: require("./api/albums"),
         },
+        {
+            plugin: require("./api/songs"),
+        },
     ]);
 
     // start the server

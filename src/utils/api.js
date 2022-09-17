@@ -37,19 +37,7 @@ const apiWrapper = (callback) => {
     };
 };
 
-const mapDbToCamelCase = (data) =>
-    Object.entries(data).reduce((result, [key, value]) => {
-        if (key.includes("_")) {
-            // eslint-disable-next-line no-param-reassign
-            key = key.replace(/_\w/g, (w) => w.toUpperCase().slice(1));
-        }
-        // eslint-disable-next-line no-param-reassign
-        result[key] = value;
-        return result;
-    }, {});
-
 module.exports = {
     sendResponse,
     apiWrapper,
-    mapDbToCamelCase,
 };

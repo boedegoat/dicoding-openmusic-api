@@ -1,6 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const { apiWrapper, sendResponse } = require("../../utils/api");
-const validateAlbums = require("../../validator/albums");
+const validateAlbum = require("../../validator/albums");
 const {
     addAlbum,
     getAlbumById,
@@ -9,7 +9,7 @@ const {
 } = require("../../services/AlbumsService");
 
 const postAlbumHandler = apiWrapper(async (req, h) => {
-    validateAlbums(req.payload);
+    validateAlbum(req.payload);
 
     const { name, year } = req.payload;
     const albumId = await addAlbum({ name, year });
@@ -34,7 +34,7 @@ const getAlbumByIdHandler = apiWrapper(async (req, h) => {
 });
 
 const editAlbumByIdHandler = apiWrapper(async (req, h) => {
-    validateAlbums(req.payload);
+    validateAlbum(req.payload);
 
     const { id } = req.params;
     const { name, year } = req.payload;

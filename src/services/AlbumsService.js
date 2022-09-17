@@ -1,6 +1,6 @@
 const { nanoid } = require("nanoid");
 const ApiError = require("../exceptions");
-const db = require("../utils/db");
+const { db } = require("../utils/db");
 
 const addAlbum = async ({ name, year }) => {
     const id = `album-${nanoid(16)}`;

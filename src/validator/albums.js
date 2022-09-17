@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const validate = require("./index");
 
-const validateAlbums = (albums) => {
+const validateAlbum = (albums) => {
     const schema = Joi.object({
         name: Joi.string().required(),
         year: Joi.number().required(),
@@ -10,4 +10,4 @@ const validateAlbums = (albums) => {
     validate(schema, albums);
 };
 
-module.exports = validateAlbums;
+module.exports = validateAlbum;

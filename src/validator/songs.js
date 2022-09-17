@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const validate = require("./index");
 
-const validateSongs = (songs) => {
+const validateSongs = (song) => {
     const schema = Joi.object({
         albumId: Joi.string(),
         title: Joi.string().required(),
@@ -11,7 +11,7 @@ const validateSongs = (songs) => {
         duration: Joi.number(),
     });
 
-    validate(schema, songs);
+    validate(schema, song);
 };
 
 module.exports = validateSongs;
