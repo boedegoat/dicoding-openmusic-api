@@ -9,15 +9,20 @@
         "prepare": "husky install",
         "format-all": "prettier --write .",
         "check-format": "prettier --check .",
-        "check-lint": "eslint . --ext ts --ext tsx --ext js"
+        "check-lint": "eslint . --ext ts --ext tsx --ext js",
+        "migrate": "node-pg-migrate"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "type": "module",
     "dependencies": {
         "@hapi/hapi": "^20.2.2",
-        "dotenv": "^16.0.2"
+        "dotenv": "^16.0.2",
+        "http-status-codes": "^2.2.0",
+        "joi": "^17.6.0",
+        "nanoid": "^3.1.20",
+        "node-pg-migrate": "^6.2.2",
+        "pg": "^8.8.0"
     },
     "devDependencies": {
         "eslint": "^8.23.1",

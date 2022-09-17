@@ -1,7 +1,7 @@
-import "dotenv/config";
-import Hapi from "@hapi/hapi";
+require("dotenv").config();
+const Hapi = require("@hapi/hapi");
 
-const init = async () => {
+const startServer = async () => {
     // set up server config
     const server = Hapi.server({
         port: process.env.PORT || 5000,
@@ -14,10 +14,15 @@ const init = async () => {
     });
 
     // register plugins
+    await server.register([
+        {
+            plugin: require("./api/albums"),
+        },
+    ]);
 
     // start the server
     await server.start();
     console.log(`Server running on ${server.info.uri}`);
 };
 
-init();
+startServer();
