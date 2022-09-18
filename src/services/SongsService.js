@@ -34,7 +34,7 @@ const getSongs = async ({ title = "", performer = "" }) => {
                 title ILIKE $1 AND 
                 performer ILIKE $2
         `,
-        values: [title + "%", performer + "%"],
+        values: [`%${title}%`, `%${performer}%`],
     };
 
     const songs = (await db.query(query)).rows;

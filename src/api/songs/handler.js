@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const { apiWrapper, sendResponse } = require("../../utils/api");
+const { sendResponse } = require("../../utils/api");
 const validateSong = require("../../validator/songs");
 const {
     addSong,
@@ -9,18 +9,10 @@ const {
     deleteSongById,
 } = require("../../services/SongsService");
 
-const postSongHandler = apiWrapper(async (req, h) => {
+const postSongHandler = async (req, h) => {
     validateSong(req.payload);
 
-    const { title, year, genre, performer, duration, albumId } = req.payload;
-    const songId = await addSong({
-        title,
-        year,
-        genre,
-        performer,
-        duration,
-        albumId,
-    });
+    const songId = await addSong(req.payload);
 
     return sendResponse(h, {
         code: StatusCodes.CREATED,
@@ -28,9 +20,9 @@ const postSongHandler = apiWrapper(async (req, h) => {
             songId,
         },
     });
-});
+};
 
-const getSongsHandler = apiWrapper(async (req, h) => {
+const getSongsHandler = async (req, h) => {
     const { title, performer } = req.query;
 
     const songs = await getSongs({ title, performer });
@@ -40,9 +32,9 @@ const getSongsHandler = apiWrapper(async (req, h) => {
             songs,
         },
     });
-});
+};
 
-const getSongByIdHandler = apiWrapper(async (req, h) => {
+const getSongByIdHandler = async (req, h) => {
     const { id } = req.params;
     const song = await getSongById(id);
 
@@ -51,36 +43,27 @@ const getSongByIdHandler = apiWrapper(async (req, h) => {
             song,
         },
     });
-});
+};
 
-const editSongByIdHandler = apiWrapper(async (req, h) => {
+const editSongByIdHandler = async (req, h) => {
     validateSong(req.payload);
 
     const { id } = req.params;
-    const { title, year, genre, performer, duration, albumId } = req.payload;
-
-    await editSongById(id, {
-        title,
-        year,
-        genre,
-        performer,
-        duration,
-        albumId,
-    });
+    await editSongById(id, req.payload);
 
     return sendResponse(h, {
         message: "sukses memperbarui lagu",
     });
-});
+};
 
-const deleteSongByIdHandler = apiWrapper(async (req, h) => {
+const deleteSongByIdHandler = async (req, h) => {
     const { id } = req.params;
     await deleteSongById(id);
 
     return sendResponse(h, {
         message: "sukses menghapus lagu",
     });
-});
+};
 
 module.exports = {
     postSongHandler,

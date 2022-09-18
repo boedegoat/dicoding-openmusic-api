@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const { apiWrapper, sendResponse } = require("../../utils/api");
+const { sendResponse } = require("../../utils/api");
 const validateAlbum = require("../../validator/albums");
 const {
     addAlbum,
@@ -8,7 +8,7 @@ const {
     deleteAlbumById,
 } = require("../../services/AlbumsService");
 
-const postAlbumHandler = apiWrapper(async (req, h) => {
+const postAlbumHandler = async (req, h) => {
     validateAlbum(req.payload);
 
     const { name, year } = req.payload;
@@ -20,9 +20,9 @@ const postAlbumHandler = apiWrapper(async (req, h) => {
             albumId,
         },
     });
-});
+};
 
-const getAlbumByIdHandler = apiWrapper(async (req, h) => {
+const getAlbumByIdHandler = async (req, h) => {
     const { id } = req.params;
     const album = await getAlbumById(id);
 
@@ -31,9 +31,9 @@ const getAlbumByIdHandler = apiWrapper(async (req, h) => {
             album,
         },
     });
-});
+};
 
-const editAlbumByIdHandler = apiWrapper(async (req, h) => {
+const editAlbumByIdHandler = async (req, h) => {
     validateAlbum(req.payload);
 
     const { id } = req.params;
@@ -44,16 +44,16 @@ const editAlbumByIdHandler = apiWrapper(async (req, h) => {
     return sendResponse(h, {
         message: "sukses memperbarui album",
     });
-});
+};
 
-const deleteAlbumByIdHandler = apiWrapper(async (req, h) => {
+const deleteAlbumByIdHandler = async (req, h) => {
     const { id } = req.params;
     await deleteAlbumById(id);
 
     return sendResponse(h, {
         message: "sukses menghapus album",
     });
-});
+};
 
 module.exports = {
     postAlbumHandler,
