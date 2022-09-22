@@ -1,9 +1,9 @@
 const Joi = require("joi");
 const validate = require("./index");
 
-const validateSongs = (song) => {
+module.exports.validateSongPayload = (payload) => {
     const currentYear = new Date().getFullYear();
-    const schema = Joi.object({
+    const songSchema = Joi.object({
         albumId: Joi.string(),
         title: Joi.string().required(),
         year: Joi.number().integer().min(1900).max(currentYear).required(),
@@ -12,7 +12,5 @@ const validateSongs = (song) => {
         duration: Joi.number(),
     });
 
-    validate(schema, song);
+    validate(songSchema, payload);
 };
-
-module.exports = validateSongs;

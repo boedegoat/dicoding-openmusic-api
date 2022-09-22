@@ -1,5 +1,7 @@
 require("dotenv").config();
 const Hapi = require("@hapi/hapi");
+const Jwt = require("@hapi/jwt");
+const { setupJwt } = require("./utils/jwt");
 
 const startServer = async () => {
     // set up server config
@@ -13,10 +15,17 @@ const startServer = async () => {
         },
     });
 
-    // register plugins
+    // register external plugins
+    await server.register([{ plugin: Jwt }]);
+
+    setupJwt(server);
+
+    // register my plugins
     await server.register([
         { plugin: require("./api/albums") },
         { plugin: require("./api/songs") },
+        { plugin: require("./api/users") },
+        { plugin: require("./api/authentications") },
     ]);
 
     // before on each sending response, check if there is any client or server error

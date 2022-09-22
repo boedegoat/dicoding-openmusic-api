@@ -1,8 +1,12 @@
 const { nanoid } = require("nanoid");
 const ApiError = require("../exceptions");
-const { db, mapDbToCamelCase } = require("../utils/db");
+const {
+    queryManyRows,
+    querySingleRow,
+    mapDbToCamelCase,
+} = require("../utils/db");
 
-const addSong = async ({
+module.exports.addSong = async ({
     albumId = null,
     title,
     year,
@@ -12,12 +16,10 @@ const addSong = async ({
 }) => {
     const id = `song-${nanoid(16)}`;
 
-    const query = {
+    const newSong = await querySingleRow({
         text: "INSERT INTO songs VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id",
         values: [id, albumId, title, year, genre, performer, duration],
-    };
-
-    const newSong = (await db.query(query)).rows[0];
+    });
 
     if (!newSong) {
         throw new ApiError.ServerError("Lagu gagal ditambahkan");
@@ -26,33 +28,27 @@ const addSong = async ({
     return newSong.id;
 };
 
-const getSongs = async ({ title = "", performer = "" }) => {
-    const query = {
+module.exports.getSongs = async ({ title = "", performer = "" }) => {
+    const songs = await queryManyRows({
         text: `
             SELECT id, title, performer FROM songs
-            WHERE 
-                title ILIKE $1 AND 
-                performer ILIKE $2
+            WHERE title ILIKE $1 AND performer ILIKE $2
         `,
         values: [`%${title}%`, `%${performer}%`],
-    };
-
-    const songs = (await db.query(query)).rows;
+    });
 
     return songs;
 };
 
-const getSongById = async (id) => {
-    const query = {
+module.exports.getSongById = async (id) => {
+    const song = await querySingleRow({
         text: `
             SELECT id, title, year, performer, genre, duration, album_id 
             FROM songs 
             WHERE id = $1
         `,
         values: [id],
-    };
-
-    const song = (await db.query(query)).rows[0];
+    });
 
     if (!song) {
         throw new ApiError.NotFoundError("Lagu tidak ditemukan");
@@ -61,13 +57,13 @@ const getSongById = async (id) => {
     return mapDbToCamelCase(song);
 };
 
-const editSongById = async (
+module.exports.editSongById = async (
     id,
     { albumId = null, title, year, genre, performer, duration = null }
 ) => {
     const updatedAt = new Date().toISOString();
 
-    const query = {
+    const updatedSong = await querySingleRow({
         text: `
             UPDATE songs 
             SET 
@@ -91,9 +87,7 @@ const editSongById = async (
             updatedAt,
             id,
         ],
-    };
-
-    const updatedSong = (await db.query(query)).rows[0];
+    });
 
     if (!updatedSong) {
         throw new ApiError.NotFoundError(
@@ -102,25 +96,15 @@ const editSongById = async (
     }
 };
 
-const deleteSongById = async (id) => {
-    const query = {
+module.exports.deleteSongById = async (id) => {
+    const deletedSong = await querySingleRow({
         text: "DELETE FROM songs WHERE id = $1 RETURNING id",
         values: [id],
-    };
-
-    const deletedSong = (await db.query(query)).rows[0];
+    });
 
     if (!deletedSong) {
         throw new ApiError.NotFoundError(
             "Gagal menghapus lagu. Id tidak ditemukan"
         );
     }
-};
-
-module.exports = {
-    addSong,
-    getSongs,
-    getSongById,
-    editSongById,
-    deleteSongById,
 };

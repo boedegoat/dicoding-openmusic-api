@@ -1,18 +1,12 @@
 const { StatusCodes } = require("http-status-codes");
 const { sendResponse } = require("../../utils/api");
-const validateSong = require("../../validator/songs");
-const {
-    addSong,
-    getSongs,
-    getSongById,
-    editSongById,
-    deleteSongById,
-} = require("../../services/SongsService");
+const validator = require("../../validator/songs");
+const songsService = require("../../services/SongsService");
 
-const postSongHandler = async (req, h) => {
-    validateSong(req.payload);
+module.exports.postSongHandler = async (req, h) => {
+    validator.validateSongPayload(req.payload);
 
-    const songId = await addSong(req.payload);
+    const songId = await songsService.addSong(req.payload);
 
     return sendResponse(h, {
         code: StatusCodes.CREATED,
@@ -22,10 +16,10 @@ const postSongHandler = async (req, h) => {
     });
 };
 
-const getSongsHandler = async (req, h) => {
+module.exports.getSongsHandler = async (req, h) => {
     const { title, performer } = req.query;
 
-    const songs = await getSongs({ title, performer });
+    const songs = await songsService.getSongs({ title, performer });
 
     return sendResponse(h, {
         data: {
@@ -34,9 +28,9 @@ const getSongsHandler = async (req, h) => {
     });
 };
 
-const getSongByIdHandler = async (req, h) => {
+module.exports.getSongByIdHandler = async (req, h) => {
     const { id } = req.params;
-    const song = await getSongById(id);
+    const song = await songsService.getSongById(id);
 
     return sendResponse(h, {
         data: {
@@ -45,30 +39,22 @@ const getSongByIdHandler = async (req, h) => {
     });
 };
 
-const editSongByIdHandler = async (req, h) => {
-    validateSong(req.payload);
+module.exports.editSongByIdHandler = async (req, h) => {
+    validator.validateSongPayload(req.payload);
 
     const { id } = req.params;
-    await editSongById(id, req.payload);
+    await songsService.editSongById(id, req.payload);
 
     return sendResponse(h, {
         message: "sukses memperbarui lagu",
     });
 };
 
-const deleteSongByIdHandler = async (req, h) => {
+module.exports.deleteSongByIdHandler = async (req, h) => {
     const { id } = req.params;
-    await deleteSongById(id);
+    await songsService.deleteSongById(id);
 
     return sendResponse(h, {
         message: "sukses menghapus lagu",
     });
-};
-
-module.exports = {
-    postSongHandler,
-    getSongsHandler,
-    getSongByIdHandler,
-    editSongByIdHandler,
-    deleteSongByIdHandler,
 };

@@ -30,11 +30,19 @@ class NotFoundError extends ClientError {
     }
 }
 
+class AuthenticationError extends ClientError {
+    constructor(message) {
+        super(message, StatusCodes.UNAUTHORIZED);
+        this.name = "AuthenticationError";
+    }
+}
+
 const ApiError = {
     ClientError,
     ServerError,
     BadRequestError,
     NotFoundError,
+    AuthenticationError,
 };
 
 module.exports = ApiError;

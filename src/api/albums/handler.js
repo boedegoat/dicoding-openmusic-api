@@ -1,18 +1,13 @@
 const { StatusCodes } = require("http-status-codes");
 const { sendResponse } = require("../../utils/api");
-const validateAlbum = require("../../validator/albums");
-const {
-    addAlbum,
-    getAlbumById,
-    editAlbumById,
-    deleteAlbumById,
-} = require("../../services/AlbumsService");
+const validator = require("../../validator/albums");
+const albumsService = require("../../services/AlbumsService");
 
-const postAlbumHandler = async (req, h) => {
-    validateAlbum(req.payload);
+module.exports.postAlbumHandler = async (req, h) => {
+    validator.validateAlbumPayload(req.payload);
 
     const { name, year } = req.payload;
-    const albumId = await addAlbum({ name, year });
+    const albumId = await albumsService.addAlbum({ name, year });
 
     return sendResponse(h, {
         code: StatusCodes.CREATED,
@@ -22,9 +17,9 @@ const postAlbumHandler = async (req, h) => {
     });
 };
 
-const getAlbumByIdHandler = async (req, h) => {
+module.exports.getAlbumByIdHandler = async (req, h) => {
     const { id } = req.params;
-    const album = await getAlbumById(id);
+    const album = await albumsService.getAlbumById(id);
 
     return sendResponse(h, {
         data: {
@@ -33,31 +28,24 @@ const getAlbumByIdHandler = async (req, h) => {
     });
 };
 
-const editAlbumByIdHandler = async (req, h) => {
-    validateAlbum(req.payload);
+module.exports.editAlbumByIdHandler = async (req, h) => {
+    validator.validateAlbumPayload(req.payload);
 
     const { id } = req.params;
     const { name, year } = req.payload;
 
-    await editAlbumById(id, { name, year });
+    await albumsService.editAlbumById(id, { name, year });
 
     return sendResponse(h, {
         message: "sukses memperbarui album",
     });
 };
 
-const deleteAlbumByIdHandler = async (req, h) => {
+module.exports.deleteAlbumByIdHandler = async (req, h) => {
     const { id } = req.params;
-    await deleteAlbumById(id);
+    await albumsService.deleteAlbumById(id);
 
     return sendResponse(h, {
         message: "sukses menghapus album",
     });
-};
-
-module.exports = {
-    postAlbumHandler,
-    getAlbumByIdHandler,
-    editAlbumByIdHandler,
-    deleteAlbumByIdHandler,
 };

@@ -7,7 +7,7 @@ exports.up = (pgm) => {
             primaryKey: true,
         },
         album_id: {
-            type: "VARCHAR(30)",
+            type: "VARCHAR(50)",
             references: '"albums"',
             onDelete: "cascade",
         },
