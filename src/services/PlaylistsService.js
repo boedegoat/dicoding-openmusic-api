@@ -1,7 +1,6 @@
 const { nanoid } = require("nanoid");
 const ApiError = require("../exceptions");
 const { querySingleRow, queryManyRows } = require("../utils/db");
-const songsService = require("./SongsService");
 
 module.exports.verifyPlaylistAccess = async ({
     role = "",
@@ -75,10 +74,7 @@ module.exports.deletePlaylist = async ({ playlistId, userId }) => {
     });
 };
 
-module.exports.addSongToPlaylist = async ({ playlistId, songId, userId }) => {
-    // verify is song exist in db
-    await songsService.getSongById(songId);
-
+module.exports.addSongToPlaylist = async ({ playlistId, songId }) => {
     const id = `playlists_songs-${nanoid(16)}`;
 
     await querySingleRow({
@@ -87,7 +83,7 @@ module.exports.addSongToPlaylist = async ({ playlistId, songId, userId }) => {
     });
 };
 
-module.exports.getSongsInPlaylist = async ({ playlistId, userId }) => {
+module.exports.getSongsInPlaylist = async ({ playlistId }) => {
     const [playlist, songsInPlaylist] = await Promise.all([
         querySingleRow({
             text: `
@@ -122,4 +118,22 @@ module.exports.deleteSongInPlaylist = async ({ playlistId, songId }) => {
         text: `DELETE FROM playlists_songs WHERE playlist_id = $1 AND song_id = $2`,
         values: [playlistId, songId],
     });
+};
+
+module.exports.getPlaylistSongActivities = async ({ playlistId }) => {
+    const activities = await queryManyRows({
+        text: `
+            SELECT users.username, songs.title, action, time
+            FROM playlist_song_activities
+            JOIN users ON users.id = playlist_song_activities.user_id
+            JOIN songs ON songs.id = playlist_song_activities.song_id
+            WHERE playlist_id = $1
+        `,
+        values: [playlistId],
+    });
+
+    return {
+        playlistId,
+        activities,
+    };
 };

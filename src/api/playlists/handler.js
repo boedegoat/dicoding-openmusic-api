@@ -1,7 +1,9 @@
 const { StatusCodes } = require("http-status-codes");
 const validator = require("../../validator/playlists");
-const playlistsService = require("../../services/PlaylistsService");
 const { sendResponse } = require("../../utils/api");
+const playlistsService = require("../../services/PlaylistsService");
+const songsService = require("../../services/SongsService");
+const activityService = require("../../services/PlaylistSongActivitiesService");
 
 // Add new playlist
 module.exports.postPlaylistHandler = async (req, h) => {
@@ -64,9 +66,18 @@ module.exports.postSongInPlaylistHandler = async (req, h) => {
         userId,
     });
 
+    // verify is song exist in db
+    await songsService.getSongById(songId);
+
     await playlistsService.addSongToPlaylist({
         playlistId,
+        songId,
+    });
+
+    await activityService.addActivity({
+        action: "add",
         userId,
+        playlistId,
         songId,
     });
 
@@ -116,7 +127,33 @@ module.exports.deleteSongInPlaylistHandler = async (req, h) => {
         songId,
     });
 
+    await activityService.addActivity({
+        action: "delete",
+        userId,
+        playlistId,
+        songId,
+    });
+
     return sendResponse(h, {
         message: "Lagu berhasil dihapus dari playlist",
+    });
+};
+
+module.exports.getPlaylistSongActivitiesHandler = async (req, h) => {
+    const { id: userId } = req.auth.credentials;
+    const { id: playlistId } = req.params;
+
+    await playlistsService.verifyPlaylistAccess({
+        role: "owner",
+        playlistId,
+        userId,
+    });
+
+    const activities = await playlistsService.getPlaylistSongActivities({
+        playlistId,
+    });
+
+    return sendResponse(h, {
+        data: activities,
     });
 };
