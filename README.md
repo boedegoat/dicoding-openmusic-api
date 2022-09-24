@@ -18,6 +18,11 @@ PGUSER=
 PGDATABASE=
 PGPASSWORD=
 PGPORT=
+
+# jwt
+ACCESS_TOKEN_KEY=
+ACCESS_TOKEN_AGE=
+REFRESH_TOKEN_KEY=
 ```
 
 kemudian jalankan command ini

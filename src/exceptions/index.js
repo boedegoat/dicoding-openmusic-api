@@ -37,12 +37,20 @@ class AuthenticationError extends ClientError {
     }
 }
 
+class ForbiddenError extends ClientError {
+    constructor(message) {
+        super(message, StatusCodes.FORBIDDEN);
+        this.name = "ForbiddenError";
+    }
+}
+
 const ApiError = {
     ClientError,
     ServerError,
     BadRequestError,
     NotFoundError,
     AuthenticationError,
+    ForbiddenError,
 };
 
 module.exports = ApiError;

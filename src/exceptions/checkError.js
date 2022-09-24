@@ -17,6 +17,7 @@ const checkError = (request, h) => {
 
         // Server Error
         if (response.isServer) {
+            console.log({ response });
             return sendResponse(h, {
                 code: StatusCodes.INTERNAL_SERVER_ERROR,
                 status: "error",

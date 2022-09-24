@@ -5,7 +5,8 @@ const { sendResponse } = require("../../utils/api");
 const token = require("../../utils/jwt");
 const validator = require("../../validator/authentications");
 
-module.exports.loginHandler = async (req, h) => {
+// Login handler
+module.exports.postAuthenticationsHandler = async (req, h) => {
     validator.validateLoginPayload(req.payload);
 
     const userId = await verifyLoginCredentials(req.payload);
@@ -25,7 +26,8 @@ module.exports.loginHandler = async (req, h) => {
     });
 };
 
-module.exports.refreshTokenHandler = async (req, h) => {
+// Renew access token by refresh token
+module.exports.putAuthenticationsHandler = async (req, h) => {
     validator.validateRefreshTokenPayload(req.payload);
 
     const { refreshToken } = req.payload;
@@ -43,7 +45,8 @@ module.exports.refreshTokenHandler = async (req, h) => {
     });
 };
 
-module.exports.deleteRefreshTokenHandler = async (req, h) => {
+// Logout (Delete refresh token in db)
+module.exports.deleteAuthenticationsHandler = async (req, h) => {
     validator.validateDeleteRefreshTokenPayload(req.payload);
 
     const { refreshToken } = req.payload;

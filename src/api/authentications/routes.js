@@ -4,16 +4,16 @@ module.exports = [
     {
         method: "POST",
         path: "/authentications",
-        handler: handler.loginHandler,
+        handler: handler.postAuthenticationsHandler, // Login
     },
     {
         method: "PUT",
         path: "/authentications",
-        handler: handler.refreshTokenHandler,
+        handler: handler.putAuthenticationsHandler, // Renew access token
     },
     {
         method: "DELETE",
         path: "/authentications",
-        handler: handler.deleteRefreshTokenHandler,
+        handler: handler.deleteAuthenticationsHandler, // Logout
     },
 ];

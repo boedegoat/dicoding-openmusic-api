@@ -3,7 +3,7 @@ const ApiError = require("../exceptions");
 
 module.exports.setupJwt = async (server) => {
     // define jwt auth strategy
-    server.auth.strategy("notesapp_jwt", "jwt", {
+    server.auth.strategy("openmusic_jwt", "jwt", {
         keys: process.env.ACCESS_TOKEN_KEY,
         verify: {
             aud: false,
