@@ -3,8 +3,9 @@ const { sendResponse } = require("../../utils/api");
 const validator = require("../../validator/songs");
 const songsService = require("../../services/SongsService");
 
+// Add new song
 module.exports.postSongHandler = async (req, h) => {
-    validator.validateSongPayload(req.payload);
+    validator.validateAddSongPayload(req.payload);
 
     const songId = await songsService.addSong(req.payload);
 
@@ -16,6 +17,7 @@ module.exports.postSongHandler = async (req, h) => {
     });
 };
 
+// Get all songs
 module.exports.getSongsHandler = async (req, h) => {
     const { title, performer } = req.query;
 
@@ -28,6 +30,7 @@ module.exports.getSongsHandler = async (req, h) => {
     });
 };
 
+// Get song by id
 module.exports.getSongByIdHandler = async (req, h) => {
     const { id } = req.params;
     const song = await songsService.getSongById(id);
@@ -39,8 +42,9 @@ module.exports.getSongByIdHandler = async (req, h) => {
     });
 };
 
-module.exports.editSongByIdHandler = async (req, h) => {
-    validator.validateSongPayload(req.payload);
+// Edit song by id
+module.exports.putSongByIdHandler = async (req, h) => {
+    validator.validateEditSongPayload(req.payload);
 
     const { id } = req.params;
     await songsService.editSongById(id, req.payload);
@@ -50,6 +54,7 @@ module.exports.editSongByIdHandler = async (req, h) => {
     });
 };
 
+// Delete song by id
 module.exports.deleteSongByIdHandler = async (req, h) => {
     const { id } = req.params;
     await songsService.deleteSongById(id);

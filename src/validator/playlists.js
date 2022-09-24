@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const validate = require("./index");
 
-module.exports.validateCreatePlaylistPayload = (payload) => {
+module.exports.validateAddPlaylistPayload = (payload) => {
     const playlistSchema = Joi.object({
         name: Joi.string().required(),
     });

@@ -3,9 +3,9 @@ const validator = require("../../validator/playlists");
 const playlistsService = require("../../services/PlaylistsService");
 const { sendResponse } = require("../../utils/api");
 
-// Create new playlist
+// Add new playlist
 module.exports.postPlaylistHandler = async (req, h) => {
-    validator.validateCreatePlaylistPayload(req.payload);
+    validator.validateAddPlaylistPayload(req.payload);
 
     const { id: userId } = req.auth.credentials;
     const { name } = req.payload;

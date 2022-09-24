@@ -14,7 +14,7 @@ module.exports = [
     {
         method: "PUT",
         path: "/albums/{id}",
-        handler: handler.editAlbumByIdHandler,
+        handler: handler.putAlbumByIdHandler,
     },
     {
         method: "DELETE",
