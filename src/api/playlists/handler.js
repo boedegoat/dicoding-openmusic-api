@@ -7,7 +7,7 @@ const activityService = require("../../services/PlaylistSongActivitiesService");
 
 // Add new playlist
 module.exports.postPlaylistHandler = async (req, h) => {
-    validator.validateAddPlaylistPayload(req.payload);
+    validator.validateAddPlaylistPayload({ payload: req.payload });
 
     const { id: userId } = req.auth.credentials;
     const { name } = req.payload;
@@ -54,8 +54,8 @@ module.exports.deletePlaylistHandler = async (req, h) => {
 };
 
 // Add song in my playlist
-module.exports.postSongInPlaylistHandler = async (req, h) => {
-    validator.validateAddPlaylistSongPayload(req.payload);
+module.exports.postSongToPlaylistHandler = async (req, h) => {
+    validator.validateAddPlaylistSongPayload({ payload: req.payload });
 
     const { id: userId } = req.auth.credentials;
     const { id: playlistId } = req.params;
@@ -67,7 +67,7 @@ module.exports.postSongInPlaylistHandler = async (req, h) => {
     });
 
     // verify is song exist in db
-    await songsService.getSongById(songId);
+    await songsService.getSongById({ songId });
 
     await playlistsService.addSongToPlaylist({
         playlistId,
@@ -110,8 +110,8 @@ module.exports.getSongsInPlaylistHandler = async (req, h) => {
 };
 
 // Delete song in my playlist
-module.exports.deleteSongInPlaylistHandler = async (req, h) => {
-    validator.validateDeletePlaylistSongPayload(req.payload);
+module.exports.deleteSongFromPlaylistHandler = async (req, h) => {
+    validator.validateDeletePlaylistSongPayload({ payload: req.payload });
 
     const { id: userId } = req.auth.credentials;
     const { id: playlistId } = req.params;
@@ -122,7 +122,7 @@ module.exports.deleteSongInPlaylistHandler = async (req, h) => {
         userId,
     });
 
-    await playlistsService.deleteSongInPlaylist({
+    await playlistsService.deleteSongFromPlaylist({
         playlistId,
         songId,
     });

@@ -1,4 +1,4 @@
-const sendResponse = (
+module.exports.sendResponse = (
     h,
     { status = "success", message = undefined, data = undefined, code = 200 }
 ) => {
@@ -10,5 +10,3 @@ const sendResponse = (
     response.code(code);
     return response;
 };
-
-module.exports = { sendResponse };

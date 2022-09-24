@@ -17,7 +17,7 @@ module.exports.addAlbum = async ({ name, year }) => {
     return newAlbum.id;
 };
 
-module.exports.getAlbumById = async (id) => {
+module.exports.getAlbumById = async ({ albumId }) => {
     const [album, songsInAlbum] = await Promise.all([
         // get album by id
         querySingleRow({
@@ -25,7 +25,7 @@ module.exports.getAlbumById = async (id) => {
                 SELECT id, name, year FROM albums 
                 WHERE id = $1
             `,
-            values: [id],
+            values: [albumId],
         }),
 
         // get songs in that album
@@ -34,14 +34,9 @@ module.exports.getAlbumById = async (id) => {
                 SELECT id, title, performer FROM songs
                 WHERE album_id = $1
             `,
-            values: [id],
+            values: [albumId],
         }),
     ]);
-
-    // Untuk para reviewer, saya ga yakin code di atas sudah tepat
-    // maklum belom familiar sama sql
-    // dan baru pertama kali pake package node-postgres
-    // mohon koreksinya 🙏
 
     if (!album) {
         throw new ApiError.NotFoundError("Album tidak ditemukan");
@@ -50,12 +45,12 @@ module.exports.getAlbumById = async (id) => {
     return { ...album, songs: songsInAlbum };
 };
 
-module.exports.editAlbumById = async (id, { name, year }) => {
+module.exports.editAlbumById = async ({ albumId, name, year }) => {
     const updatedAt = new Date().toISOString();
 
     const updatedAlbum = await querySingleRow({
         text: "UPDATE albums SET name = $1, year = $2, updated_at = $3 WHERE id = $4 RETURNING id",
-        values: [name, year, updatedAt, id],
+        values: [name, year, updatedAt, albumId],
     });
 
     if (!updatedAlbum) {
@@ -65,10 +60,10 @@ module.exports.editAlbumById = async (id, { name, year }) => {
     }
 };
 
-module.exports.deleteAlbumById = async (id) => {
+module.exports.deleteAlbumById = async ({ albumId }) => {
     const deletedAlbum = await querySingleRow({
         text: "DELETE FROM albums WHERE id = $1 RETURNING id",
-        values: [id],
+        values: [albumId],
     });
 
     if (!deletedAlbum) {

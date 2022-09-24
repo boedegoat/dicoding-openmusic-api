@@ -5,10 +5,9 @@ const albumsService = require("../../services/AlbumsService");
 
 // Add new album
 module.exports.postAlbumHandler = async (req, h) => {
-    validator.validateAddAlbumPayload(req.payload);
+    validator.validateAddAlbumPayload({ payload: req.payload });
 
-    const { name, year } = req.payload;
-    const albumId = await albumsService.addAlbum({ name, year });
+    const albumId = await albumsService.addAlbum(req.payload);
 
     return sendResponse(h, {
         code: StatusCodes.CREATED,
@@ -20,8 +19,8 @@ module.exports.postAlbumHandler = async (req, h) => {
 
 // Get album by id
 module.exports.getAlbumByIdHandler = async (req, h) => {
-    const { id } = req.params;
-    const album = await albumsService.getAlbumById(id);
+    const { id: albumId } = req.params;
+    const album = await albumsService.getAlbumById({ albumId });
 
     return sendResponse(h, {
         data: {
@@ -32,12 +31,10 @@ module.exports.getAlbumByIdHandler = async (req, h) => {
 
 // Edit album by id
 module.exports.putAlbumByIdHandler = async (req, h) => {
-    validator.validateEditAlbumPayload(req.payload);
+    validator.validateEditAlbumPayload({ payload: req.payload });
 
-    const { id } = req.params;
-    const { name, year } = req.payload;
-
-    await albumsService.editAlbumById(id, { name, year });
+    const { id: albumId } = req.params;
+    await albumsService.editAlbumById({ albumId, ...req.payload });
 
     return sendResponse(h, {
         message: "sukses memperbarui album",
@@ -46,8 +43,8 @@ module.exports.putAlbumByIdHandler = async (req, h) => {
 
 // Delete album by id
 module.exports.deleteAlbumByIdHandler = async (req, h) => {
-    const { id } = req.params;
-    await albumsService.deleteAlbumById(id);
+    const { id: albumId } = req.params;
+    await albumsService.deleteAlbumById({ albumId });
 
     return sendResponse(h, {
         message: "sukses menghapus album",

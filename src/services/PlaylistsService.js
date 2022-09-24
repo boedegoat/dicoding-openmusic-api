@@ -113,7 +113,7 @@ module.exports.getSongsInPlaylist = async ({ playlistId }) => {
     };
 };
 
-module.exports.deleteSongInPlaylist = async ({ playlistId, songId }) => {
+module.exports.deleteSongFromPlaylist = async ({ playlistId, songId }) => {
     await querySingleRow({
         text: `DELETE FROM playlists_songs WHERE playlist_id = $1 AND song_id = $2`,
         values: [playlistId, songId],

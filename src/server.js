@@ -18,7 +18,7 @@ const startServer = async () => {
     // register external plugins
     await server.register([{ plugin: Jwt }]);
 
-    setupJwt(server);
+    setupJwt({ server });
 
     // register my plugins
     await server.register([

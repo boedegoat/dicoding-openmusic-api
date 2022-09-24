@@ -6,10 +6,10 @@ const collaboratorSchema = Joi.object({
     userId: Joi.string().required(),
 });
 
-module.exports.validateAddCollaboratorPayload = (payload) => {
+module.exports.validateAddCollaboratorPayload = ({ payload }) => {
     validate(collaboratorSchema, payload);
 };
 
-module.exports.validateDeleteCollaboratorPayload = (payload) => {
+module.exports.validateDeleteCollaboratorPayload = ({ payload }) => {
     validate(collaboratorSchema, payload);
 };

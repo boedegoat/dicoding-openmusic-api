@@ -1,7 +1,7 @@
 const Jwt = require("@hapi/jwt");
 const ApiError = require("../exceptions");
 
-module.exports.setupJwt = async (server) => {
+module.exports.setupJwt = async ({ server }) => {
     // define jwt auth strategy
     server.auth.strategy("openmusic_jwt", "jwt", {
         keys: process.env.ACCESS_TOKEN_KEY,
@@ -20,15 +20,15 @@ module.exports.setupJwt = async (server) => {
     });
 };
 
-module.exports.createAccessToken = (payload) => {
+module.exports.createAccessToken = ({ payload }) => {
     return Jwt.token.generate(payload, process.env.ACCESS_TOKEN_KEY);
 };
 
-module.exports.createRefreshToken = (payload) => {
+module.exports.createRefreshToken = ({ payload }) => {
     return Jwt.token.generate(payload, process.env.REFRESH_TOKEN_KEY);
 };
 
-module.exports.verifyRefreshTokenValid = (refreshToken) => {
+module.exports.verifyRefreshTokenValid = ({ refreshToken }) => {
     try {
         const artifacts = Jwt.token.decode(refreshToken);
         Jwt.token.verifySignature(artifacts, process.env.REFRESH_TOKEN_KEY);

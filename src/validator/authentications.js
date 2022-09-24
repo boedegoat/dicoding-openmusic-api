@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const validate = require("./index");
 
-module.exports.validateLoginPayload = (payload) => {
+module.exports.validateLoginPayload = ({ payload }) => {
     const loginSchema = Joi.object({
         username: Joi.string().required(),
         password: Joi.string().required(),
@@ -10,7 +10,7 @@ module.exports.validateLoginPayload = (payload) => {
     validate(loginSchema, payload);
 };
 
-module.exports.validateRefreshTokenPayload = (payload) => {
+module.exports.validateRefreshTokenPayload = ({ payload }) => {
     const refreshTokenSchema = Joi.object({
         refreshToken: Joi.string().required(),
     });
@@ -18,7 +18,7 @@ module.exports.validateRefreshTokenPayload = (payload) => {
     validate(refreshTokenSchema, payload);
 };
 
-module.exports.validateDeleteRefreshTokenPayload = (payload) => {
+module.exports.validateDeleteRefreshTokenPayload = ({ payload }) => {
     const refreshTokenSchema = Joi.object({
         refreshToken: Joi.string().required(),
     });

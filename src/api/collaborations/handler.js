@@ -6,7 +6,7 @@ const playlistsService = require("../../services/PlaylistsService");
 
 // Add new collaborator to playlist
 module.exports.postCollaborationsHandler = async (req, h) => {
-    validator.validateAddCollaboratorPayload(req.payload);
+    validator.validateAddCollaboratorPayload({ payload: req.payload });
 
     const { id: userId } = req.auth.credentials;
     const { playlistId, userId: newCollabUserId } = req.payload;
@@ -32,7 +32,7 @@ module.exports.postCollaborationsHandler = async (req, h) => {
 
 // Delete collaborator from playlist
 module.exports.deleteCollaborationsHandler = async (req, h) => {
-    validator.validateDeleteCollaboratorPayload(req.payload);
+    validator.validateDeleteCollaboratorPayload({ payload: req.payload });
 
     const { id: userId } = req.auth.credentials;
     const { playlistId, userId: newCollabUserId } = req.payload;

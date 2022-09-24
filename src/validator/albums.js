@@ -9,12 +9,12 @@ const getAlbumSchema = () => {
     });
 };
 
-module.exports.validateAddAlbumPayload = (payload) => {
+module.exports.validateAddAlbumPayload = ({ payload }) => {
     const albumSchema = getAlbumSchema();
     validate(albumSchema, payload);
 };
 
-module.exports.validateEditAlbumPayload = (payload) => {
+module.exports.validateEditAlbumPayload = ({ payload }) => {
     const albumSchema = getAlbumSchema();
     validate(albumSchema, payload);
 };

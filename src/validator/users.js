@@ -7,6 +7,6 @@ const userSchema = Joi.object({
     fullname: Joi.string().required(),
 });
 
-module.exports.validateUserPayload = (payload) => {
+module.exports.validateUserPayload = ({ payload }) => {
     validate(userSchema, payload);
 };

@@ -40,14 +40,14 @@ module.exports.getSongs = async ({ title = "", performer = "" }) => {
     return songs;
 };
 
-module.exports.getSongById = async (id) => {
+module.exports.getSongById = async ({ songId }) => {
     const song = await querySingleRow({
         text: `
             SELECT id, title, year, performer, genre, duration, album_id 
             FROM songs 
             WHERE id = $1
         `,
-        values: [id],
+        values: [songId],
     });
 
     if (!song) {
@@ -57,10 +57,15 @@ module.exports.getSongById = async (id) => {
     return mapDbToCamelCase(song);
 };
 
-module.exports.editSongById = async (
-    id,
-    { albumId = null, title, year, genre, performer, duration = null }
-) => {
+module.exports.editSongById = async ({
+    songId,
+    albumId = null,
+    title,
+    year,
+    genre,
+    performer,
+    duration = null,
+}) => {
     const updatedAt = new Date().toISOString();
 
     const updatedSong = await querySingleRow({
@@ -85,7 +90,7 @@ module.exports.editSongById = async (
             performer,
             duration,
             updatedAt,
-            id,
+            songId,
         ],
     });
 
@@ -96,10 +101,10 @@ module.exports.editSongById = async (
     }
 };
 
-module.exports.deleteSongById = async (id) => {
+module.exports.deleteSongById = async ({ songId }) => {
     const deletedSong = await querySingleRow({
         text: "DELETE FROM songs WHERE id = $1 RETURNING id",
-        values: [id],
+        values: [songId],
     });
 
     if (!deletedSong) {

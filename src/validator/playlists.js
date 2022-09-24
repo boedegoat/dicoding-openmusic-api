@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const validate = require("./index");
 
-module.exports.validateAddPlaylistPayload = (payload) => {
+module.exports.validateAddPlaylistPayload = ({ payload }) => {
     const playlistSchema = Joi.object({
         name: Joi.string().required(),
     });
@@ -9,7 +9,7 @@ module.exports.validateAddPlaylistPayload = (payload) => {
     validate(playlistSchema, payload);
 };
 
-module.exports.validateAddPlaylistSongPayload = (payload) => {
+module.exports.validateAddPlaylistSongPayload = ({ payload }) => {
     const playlistSchema = Joi.object({
         songId: Joi.string().required(),
     });
@@ -17,7 +17,7 @@ module.exports.validateAddPlaylistSongPayload = (payload) => {
     validate(playlistSchema, payload);
 };
 
-module.exports.validateDeletePlaylistSongPayload = (payload) => {
+module.exports.validateDeletePlaylistSongPayload = ({ payload }) => {
     const playlistSchema = Joi.object({
         songId: Joi.string().required(),
     });

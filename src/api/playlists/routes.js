@@ -28,7 +28,7 @@ module.exports = [
     {
         method: "POST",
         path: "/playlists/{id}/songs",
-        handler: handler.postSongInPlaylistHandler,
+        handler: handler.postSongToPlaylistHandler,
         options: {
             auth: "openmusic_jwt",
         },
@@ -44,7 +44,7 @@ module.exports = [
     {
         method: "DELETE",
         path: "/playlists/{id}/songs",
-        handler: handler.deleteSongInPlaylistHandler,
+        handler: handler.deleteSongFromPlaylistHandler,
         options: {
             auth: "openmusic_jwt",
         },

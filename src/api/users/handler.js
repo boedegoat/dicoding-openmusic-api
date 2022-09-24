@@ -5,7 +5,7 @@ const validator = require("../../validator/users");
 
 // Register / Sign Up user handler
 module.exports.postUserHandler = async (req, h) => {
-    validator.validateUserPayload(req.payload);
+    validator.validateUserPayload({ payload: req.payload });
 
     const newUserId = await usersService.addUser(req.payload);
 

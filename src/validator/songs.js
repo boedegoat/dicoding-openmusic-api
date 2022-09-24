@@ -13,12 +13,12 @@ const getSongSchema = () => {
     });
 };
 
-module.exports.validateAddSongPayload = (payload) => {
+module.exports.validateAddSongPayload = ({ payload }) => {
     const songSchema = getSongSchema();
     validate(songSchema, payload);
 };
 
-module.exports.validateEditSongPayload = (payload) => {
+module.exports.validateEditSongPayload = ({ payload }) => {
     const songSchema = getSongSchema();
     validate(songSchema, payload);
 };
