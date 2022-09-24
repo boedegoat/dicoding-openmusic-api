@@ -52,3 +52,16 @@ module.exports.verifyLoginCredentials = async ({ username, password }) => {
 
     return user.id;
 };
+
+module.exports.getUserById = async (userId) => {
+    const user = await querySingleRow({
+        text: `SELECT * FROM users WHERE id = $1`,
+        values: [userId],
+    });
+
+    if (!user) {
+        throw new ApiError.NotFoundError("User tidak ditemukan");
+    }
+
+    return user;
+};

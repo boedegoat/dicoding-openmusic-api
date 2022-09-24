@@ -38,6 +38,12 @@ module.exports.deletePlaylistHandler = async (req, h) => {
     const { id: userId } = req.auth.credentials;
     const { id: playlistId } = req.params;
 
+    await playlistsService.verifyPlaylistAccess({
+        role: "owner",
+        playlistId,
+        userId,
+    });
+
     await playlistsService.deletePlaylist({ playlistId, userId });
 
     return sendResponse(h, {
@@ -52,6 +58,11 @@ module.exports.postSongInPlaylistHandler = async (req, h) => {
     const { id: userId } = req.auth.credentials;
     const { id: playlistId } = req.params;
     const { songId } = req.payload;
+
+    await playlistsService.verifyPlaylistAccess({
+        playlistId,
+        userId,
+    });
 
     await playlistsService.addSongToPlaylist({
         playlistId,
@@ -69,6 +80,11 @@ module.exports.postSongInPlaylistHandler = async (req, h) => {
 module.exports.getSongsInPlaylistHandler = async (req, h) => {
     const { id: userId } = req.auth.credentials;
     const { id: playlistId } = req.params;
+
+    await playlistsService.verifyPlaylistAccess({
+        playlistId,
+        userId,
+    });
 
     const songsInPlaylist = await playlistsService.getSongsInPlaylist({
         userId,
@@ -90,9 +106,13 @@ module.exports.deleteSongInPlaylistHandler = async (req, h) => {
     const { id: playlistId } = req.params;
     const { songId } = req.payload;
 
-    await playlistsService.deleteSongFromPlaylist({
+    await playlistsService.verifyPlaylistAccess({
         playlistId,
         userId,
+    });
+
+    await playlistsService.deleteSongInPlaylist({
+        playlistId,
         songId,
     });
 

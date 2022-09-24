@@ -2,12 +2,12 @@ const { Pool } = require("pg");
 
 const db = new Pool();
 
-module.exports.queryManyRows = async (query) => {
-    return (await db.query(query)).rows;
+module.exports.queryManyRows = async ({ text, values }) => {
+    return (await db.query({ text, values })).rows;
 };
 
-module.exports.querySingleRow = async (query) => {
-    return (await db.query(query)).rows[0];
+module.exports.querySingleRow = async ({ text, values }) => {
+    return (await db.query({ text, values })).rows[0];
 };
 
 module.exports.mapDbToCamelCase = (data) => {
