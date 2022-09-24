@@ -4,9 +4,9 @@ Halo para reviewer 👋, senang sekali bisa ikut tergabung ke dalam komunitas di
 
 [GitHub Repo](https://github.com/boedegoat/dicoding-openmusic-api)
 
-Saya mencoba untuk membuat semua testing passed, namun karena saya masih pemula postgresql, mungkin ada beberapa code yang sudah bekerja dengan baik tapi masih belum sesuai dengan aturan sql yang semestinya. Untuk itu, saya membutuhkan koreksi agar penulisan code saya menjadi jauh lebih baik lagi.
+Saya mencoba untuk membuat semua testing passed, namun karena saya masih pemula postgresql, mungkin ada beberapa code yang sudah bekerja dengan baik tapi belum sesuai dengan best practices. Untuk itu, Saran dan kritik dipersilahkan untuk membuat webserver ini jadi lebih baik lagi.
 
-Sorry jika masih ada kekurangan karena saya masih banyak belajar. Sekian, Terimakasih 😀.
+Sekian, Terimakasih 😀.
 
 ## Langkah menjalankan webserver openmusic api
 
