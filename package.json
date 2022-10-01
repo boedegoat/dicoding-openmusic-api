@@ -5,7 +5,6 @@
     "main": "./src/server.js",
     "scripts": {
         "dev": "nodemon ./src/server.js",
-        "build": "babel src -d dist --copy-files",
         "start": "NODE_ENV=production node ./src/server.js",
         "prepare": "husky install",
         "format-all": "prettier --write .",
@@ -18,7 +17,9 @@
     "license": "ISC",
     "dependencies": {
         "@hapi/hapi": "^20.2.2",
+        "@hapi/inert": "^7.0.0",
         "@hapi/jwt": "^3.0.0",
+        "amqplib": "^0.10.3",
         "bcrypt": "^5.0.1",
         "dotenv": "^16.0.2",
         "http-status-codes": "^2.2.0",

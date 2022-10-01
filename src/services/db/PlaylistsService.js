@@ -7,33 +7,32 @@ module.exports.verifyPlaylistAccess = async ({
     playlistId,
     userId,
 }) => {
-    const playlist = await querySingleRow({
-        text: `SELECT * FROM playlists WHERE id = $1`,
-        values: [playlistId],
-    });
+    const [playlist, collab] = await Promise.all([
+        querySingleRow({
+            text: `SELECT * FROM playlists WHERE id = $1`,
+            values: [playlistId],
+        }),
+        querySingleRow({
+            text: `SELECT * FROM collaborations WHERE playlist_id = $1 AND user_id = $2`,
+            values: [playlistId, userId],
+        }),
+    ]);
 
     if (!playlist) {
         throw new ApiError.NotFoundError("Playlist tidak ditemukan");
     }
 
-    // if role = owner, throw error if user is not the owner
-    if (role === "owner" && playlist.owner !== userId) {
-        throw new ApiError.ForbiddenError(
-            "Anda tidak diperbolehkan untuk mengakses playlist ini karena bukan milik anda"
-        );
-    }
-
-    const collab = await querySingleRow({
-        text: `SELECT * FROM collaborations WHERE playlist_id = $1 AND user_id = $2`,
-        values: [playlistId, userId],
-    });
-
-    // If role is empty, it means owner and collaborator have access to playlist
-    // throw error if user is not the owner or collaborator of playlist
-    if (playlist.owner !== userId && !collab) {
-        throw new ApiError.ForbiddenError(
-            "Anda tidak diperbolehkan untuk mengakses playlist ini karena bukan milik anda"
-        );
+    if (playlist.owner !== userId) {
+        if (role === "owner") {
+            throw new ApiError.ForbiddenError(
+                "Anda tidak diperbolehkan untuk mengakses playlist ini karena bukan milik anda"
+            );
+        }
+        if (!collab) {
+            throw new ApiError.ForbiddenError(
+                "Anda tidak diperbolehkan untuk mengakses playlist ini karena bukan milik anda"
+            );
+        }
     }
 };
 
