@@ -1,12 +1,12 @@
 const { StatusCodes } = require("http-status-codes");
 const { sendResponse } = require("../../utils/api");
-const validator = require("../../validator/albums");
+const albumsValidator = require("../../validator/albums");
+const uploadValidator = require("../../validator/uploads");
 const albumsService = require("../../services/db/AlbumsService");
+const localStorageService = require("../../services/localstorage/LocalStorageService");
 
 // Add new album
 module.exports.postAlbumHandler = async (req, h) => {
-    validator.validateAddAlbumPayload({ payload: req.payload });
-
     const albumId = await albumsService.addAlbum(req.payload);
 
     return sendResponse(h, {
@@ -31,7 +31,7 @@ module.exports.getAlbumByIdHandler = async (req, h) => {
 
 // Edit album by id
 module.exports.putAlbumByIdHandler = async (req, h) => {
-    validator.validateEditAlbumPayload({ payload: req.payload });
+    albumsValidator.validateEditAlbumPayload({ payload: req.payload });
 
     const { id: albumId } = req.params;
     await albumsService.editAlbumById({ albumId, ...req.payload });
@@ -48,5 +48,26 @@ module.exports.deleteAlbumByIdHandler = async (req, h) => {
 
     return sendResponse(h, {
         message: "sukses menghapus album",
+    });
+};
+
+// Upload album cover
+module.exports.postAlbumCover = async (req, h) => {
+    const { cover } = req.payload;
+
+    uploadValidator.validateImageHeaders({ payload: cover.hapi.headers });
+
+    const { id: albumId } = req.params;
+
+    const coverUrl = await localStorageService.writeFile({
+        file: cover,
+        meta: cover.hapi,
+    });
+
+    await albumsService.storeAlbumCoverUrl({ albumId, coverUrl });
+
+    return sendResponse(h, {
+        code: 201,
+        message: "Sampul berhasil diunggah",
     });
 };

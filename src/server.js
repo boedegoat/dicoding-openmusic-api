@@ -30,6 +30,7 @@ const startServer = async () => {
         { plugin: require("./api/playlists") },
         { plugin: require("./api/collaborations") },
         { plugin: require("./api/exports") },
+        { plugin: require("./api/uploads") },
     ]);
 
     // before on each sending response, check if there is any client or server error

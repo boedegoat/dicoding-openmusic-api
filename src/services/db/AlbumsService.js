@@ -1,6 +1,10 @@
 const { nanoid } = require("nanoid");
 const ApiError = require("../../exceptions");
-const { querySingleRow, queryManyRows } = require("../../utils/db");
+const {
+    querySingleRow,
+    queryManyRows,
+    mapDbToCamelCase,
+} = require("../../utils/db");
 
 module.exports.addAlbum = async ({ name, year }) => {
     const id = `album-${nanoid(16)}`;
@@ -22,7 +26,7 @@ module.exports.getAlbumById = async ({ albumId }) => {
         // get album by id
         querySingleRow({
             text: `
-                SELECT id, name, year FROM albums 
+                SELECT id, name, year, cover_url FROM albums 
                 WHERE id = $1
             `,
             values: [albumId],
@@ -42,7 +46,7 @@ module.exports.getAlbumById = async ({ albumId }) => {
         throw new ApiError.NotFoundError("Album tidak ditemukan");
     }
 
-    return { ...album, songs: songsInAlbum };
+    return { ...mapDbToCamelCase(album), songs: songsInAlbum };
 };
 
 module.exports.editAlbumById = async ({ albumId, name, year }) => {
@@ -71,4 +75,11 @@ module.exports.deleteAlbumById = async ({ albumId }) => {
             "Gagal menghapus album. Id tidak ditemukan"
         );
     }
+};
+
+module.exports.storeAlbumCoverUrl = ({ coverUrl, albumId }) => {
+    return querySingleRow({
+        text: `UPDATE albums SET cover_url = $1 WHERE id = $2 RETURNING id`,
+        values: [coverUrl, albumId],
+    });
 };
