@@ -1,7 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const { sendResponse } = require("../../utils/api");
 const validator = require("../../validator/albums");
-const albumsService = require("../../services/AlbumsService");
+const albumsService = require("../../services/db/AlbumsService");
 
 // Add new album
 module.exports.postAlbumHandler = async (req, h) => {

@@ -1,7 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const { sendResponse } = require("../../utils/api");
 const validator = require("../../validator/songs");
-const songsService = require("../../services/SongsService");
+const songsService = require("../../services/db/SongsService");
 
 // Add new song
 module.exports.postSongHandler = async (req, h) => {

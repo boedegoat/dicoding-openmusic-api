@@ -1,8 +1,8 @@
 const { StatusCodes } = require("http-status-codes");
 const validator = require("../../validator/collaborations");
-const collabsService = require("../../services/collaborationsService");
 const { sendResponse } = require("../../utils/api");
-const playlistsService = require("../../services/PlaylistsService");
+const collabsService = require("../../services/db/collaborationsService");
+const playlistsService = require("../../services/db/PlaylistsService");
 
 // Add new collaborator to playlist
 module.exports.postCollaborationsHandler = async (req, h) => {

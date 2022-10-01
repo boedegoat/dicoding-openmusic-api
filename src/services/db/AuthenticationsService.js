@@ -1,5 +1,5 @@
-const ApiError = require("../exceptions");
-const { querySingleRow } = require("../utils/db");
+const ApiError = require("../../exceptions");
+const { querySingleRow } = require("../../utils/db");
 
 module.exports.addRefreshTokenToDb = async ({ refreshToken }) => {
     await querySingleRow({

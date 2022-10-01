@@ -1,6 +1,6 @@
 const { nanoid } = require("nanoid");
-const ApiError = require("../exceptions");
-const { querySingleRow, queryManyRows } = require("../utils/db");
+const ApiError = require("../../exceptions");
+const { querySingleRow, queryManyRows } = require("../../utils/db");
 
 module.exports.verifyPlaylistAccess = async ({
     role = "",

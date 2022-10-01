@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const usersService = require("../../services/UsersService");
+const usersService = require("../../services/db/UsersService");
 const { sendResponse } = require("../../utils/api");
 const validator = require("../../validator/users");
 

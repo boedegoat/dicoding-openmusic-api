@@ -1,5 +1,5 @@
 const { nanoid } = require("nanoid");
-const { querySingleRow } = require("../utils/db");
+const { querySingleRow } = require("../../utils/db");
 
 module.exports.addActivity = async ({ userId, playlistId, songId, action }) => {
     const id = `ps_activity-${nanoid(16)}`;

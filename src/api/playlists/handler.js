@@ -1,9 +1,9 @@
 const { StatusCodes } = require("http-status-codes");
 const validator = require("../../validator/playlists");
 const { sendResponse } = require("../../utils/api");
-const playlistsService = require("../../services/PlaylistsService");
-const songsService = require("../../services/SongsService");
-const activityService = require("../../services/PlaylistSongActivitiesService");
+const playlistsService = require("../../services/db/PlaylistsService");
+const songsService = require("../../services/db/SongsService");
+const activityService = require("../../services/db/PlaylistSongActivitiesService");
 
 // Add new playlist
 module.exports.postPlaylistHandler = async (req, h) => {

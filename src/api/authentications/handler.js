@@ -1,6 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
-const authService = require("../../services/AuthenticationsService");
-const { verifyLoginCredentials } = require("../../services/UsersService");
+const authService = require("../../services/db/AuthenticationsService");
+const { verifyLoginCredentials } = require("../../services/db/UsersService");
 const { sendResponse } = require("../../utils/api");
 const token = require("../../utils/jwt");
 const validator = require("../../validator/authentications");

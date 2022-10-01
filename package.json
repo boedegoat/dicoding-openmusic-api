@@ -5,6 +5,7 @@
     "main": "./src/server.js",
     "scripts": {
         "dev": "nodemon ./src/server.js",
+        "build": "babel src -d dist --copy-files",
         "start": "NODE_ENV=production node ./src/server.js",
         "prepare": "husky install",
         "format-all": "prettier --write .",

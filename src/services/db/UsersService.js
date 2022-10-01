@@ -1,7 +1,7 @@
 const { nanoid } = require("nanoid");
 const bcrypt = require("bcrypt");
-const { querySingleRow } = require("../utils/db");
-const ApiError = require("../exceptions");
+const { querySingleRow } = require("../../utils/db");
+const ApiError = require("../../exceptions");
 
 const checkUsernameAvailability = async (username) => {
     const user = await querySingleRow({

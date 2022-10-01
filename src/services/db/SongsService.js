@@ -1,10 +1,10 @@
 const { nanoid } = require("nanoid");
-const ApiError = require("../exceptions");
+const ApiError = require("../../exceptions");
 const {
     queryManyRows,
     querySingleRow,
     mapDbToCamelCase,
-} = require("../utils/db");
+} = require("../../utils/db");
 
 module.exports.addSong = async ({
     albumId = null,

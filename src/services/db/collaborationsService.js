@@ -1,5 +1,5 @@
 const { nanoid } = require("nanoid");
-const { querySingleRow } = require("../utils/db");
+const { querySingleRow } = require("../../utils/db");
 const usersService = require("./UsersService");
 
 module.exports.addCollaboratorToPlaylist = async ({ playlistId, userId }) => {
