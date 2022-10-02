@@ -1,7 +1,9 @@
 const amqp = require("amqplib");
 
 module.exports.sendMessage = async ({ queue, message }) => {
-    const connection = await amqp.connect(process.env.RABBITMQ_SERVER);
+    const connection = await amqp.connect(
+        process.env.RABBITMQ_SERVER || "amqp://localhost"
+    );
     const channel = await connection.createChannel();
 
     // create queue channel if not exist yet

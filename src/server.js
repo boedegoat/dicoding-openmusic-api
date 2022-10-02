@@ -4,11 +4,14 @@ const Jwt = require("@hapi/jwt");
 const Inert = require("@hapi/inert");
 const { setupJwt } = require("./utils/jwt");
 
+global.host = process.env.HOST || "localhost";
+global.port = process.env.PORT || 5000;
+
 const startServer = async () => {
     // set up server config
     const server = Hapi.server({
-        port: process.env.PORT || 5000,
-        host: process.env.HOST || "localhost",
+        host: global.host,
+        port: global.port,
         routes: {
             cors: {
                 origin: ["*"],

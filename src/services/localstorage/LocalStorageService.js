@@ -24,9 +24,8 @@ module.exports.writeFile = ({ file, meta }) => {
         file.pipe(fileStream);
 
         file.on("end", () => {
-            const fileLocation = `http://${process.env.HOST || "localhost"}:${
-                process.env.PORT || 5000
-            }/upload/images/${fileName}`;
+            const rootUrl = `http://${global.host}:${global.port}`;
+            const fileLocation = `${rootUrl}/upload/images/${fileName}`;
 
             resolve(fileLocation);
         });

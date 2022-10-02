@@ -83,3 +83,53 @@ module.exports.storeAlbumCoverUrl = ({ coverUrl, albumId }) => {
         values: [coverUrl, albumId],
     });
 };
+
+module.exports.getAlbumLikes = async ({ albumId }) => {
+    const { count: likes } = await querySingleRow({
+        text: `SELECT COUNT(*) FROM album_likes WHERE album_id = $1`,
+        values: [albumId],
+    });
+
+    return Number(likes);
+};
+
+module.exports.toggleLikeAlbum = async ({ albumId, userId }) => {
+    const album = await querySingleRow({
+        text: `SELECT id FROM albums WHERE id = $1`,
+        values: [albumId],
+    });
+
+    if (!album) {
+        throw new ApiError.NotFoundError("Album tidak ditemukan");
+    }
+
+    const likedAlbum = await querySingleRow({
+        text: `SELECT id FROM album_likes WHERE album_id = $1 AND user_id = $2`,
+        values: [album.id, userId],
+    });
+
+    let query = {};
+    let action = "";
+
+    // (Unlike) if user already liked the album, then delete record from album_likes
+    if (likedAlbum) {
+        action = "batal menyukai";
+        query = {
+            text: `DELETE FROM album_likes WHERE album_id = $1 AND user_id = $2`,
+            values: [album.id, userId],
+        };
+    }
+    // (Like) otherwise, add record to album_likes
+    else {
+        action = "menyukai";
+        const id = `album_likes-${nanoid(16)}`;
+        query = {
+            text: `INSERT INTO album_likes VALUES($1, $2, $3)`,
+            values: [id, albumId, userId],
+        };
+    }
+
+    await querySingleRow(query);
+
+    return action;
+};

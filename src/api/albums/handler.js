@@ -52,7 +52,7 @@ module.exports.deleteAlbumByIdHandler = async (req, h) => {
 };
 
 // Upload album cover
-module.exports.postAlbumCover = async (req, h) => {
+module.exports.postAlbumCoverHandler = async (req, h) => {
     const { cover } = req.payload;
 
     uploadValidator.validateImageHeaders({ payload: cover.hapi.headers });
@@ -69,5 +69,29 @@ module.exports.postAlbumCover = async (req, h) => {
     return sendResponse(h, {
         code: 201,
         message: "Sampul berhasil diunggah",
+    });
+};
+
+module.exports.getAlbumLikesHandler = async (req, h) => {
+    const { id: albumId } = req.params;
+
+    const likes = await albumsService.getAlbumLikes({ albumId });
+
+    return sendResponse(h, {
+        data: {
+            likes,
+        },
+    });
+};
+
+module.exports.postAlbumLikesHandler = async (req, h) => {
+    const { id: albumId } = req.params;
+    const { id: userId } = req.auth.credentials;
+
+    const action = await albumsService.toggleLikeAlbum({ albumId, userId });
+
+    return sendResponse(h, {
+        code: 201,
+        message: `Berhasil ${action} album`,
     });
 };

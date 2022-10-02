@@ -24,7 +24,7 @@ module.exports = [
     {
         method: "POST",
         path: "/albums/{id}/covers",
-        handler: handler.postAlbumCover,
+        handler: handler.postAlbumCoverHandler,
         options: {
             payload: {
                 allow: "multipart/form-data",
@@ -32,6 +32,19 @@ module.exports = [
                 output: "stream",
                 maxBytes: 512000, // 500-an kb
             },
+        },
+    },
+    {
+        method: "GET",
+        path: "/albums/{id}/likes",
+        handler: handler.getAlbumLikesHandler,
+    },
+    {
+        method: "POST",
+        path: "/albums/{id}/likes",
+        handler: handler.postAlbumLikesHandler,
+        options: {
+            auth: "openmusic_jwt",
         },
     },
 ];
