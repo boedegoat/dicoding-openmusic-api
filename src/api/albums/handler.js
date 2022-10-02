@@ -4,9 +4,15 @@ const albumsValidator = require("../../validator/albums");
 const uploadValidator = require("../../validator/uploads");
 const albumsService = require("../../services/db/AlbumsService");
 const localStorageService = require("../../services/localstorage/LocalStorageService");
+const cacheService = require("../../services/cache/CacheService");
+
+const cacheKeys = {
+    albumLikes: (albumId) => `album_likes:${albumId}`,
+};
 
 // Add new album
 module.exports.postAlbumHandler = async (req, h) => {
+    albumsValidator.validateAddAlbumPayload({ payload: req.payload });
     const albumId = await albumsService.addAlbum(req.payload);
 
     return sendResponse(h, {
@@ -74,14 +80,34 @@ module.exports.postAlbumCoverHandler = async (req, h) => {
 
 module.exports.getAlbumLikesHandler = async (req, h) => {
     const { id: albumId } = req.params;
+    const cacheKey = cacheKeys.albumLikes(albumId);
 
-    const likes = await albumsService.getAlbumLikes({ albumId });
+    try {
+        // if likes still in cache, get it from cache
+        const likes = JSON.parse(await cacheService.get(cacheKey));
 
-    return sendResponse(h, {
-        data: {
-            likes,
-        },
-    });
+        const response = sendResponse(h, {
+            data: {
+                likes,
+            },
+        });
+        response.header("X-Data-Source", "cache");
+        return response;
+    } catch {
+        // otherwise, get likes from db
+        const likes = await albumsService.getAlbumLikes({ albumId });
+
+        // then store likes count to cache
+        await cacheService.set(cacheKey, JSON.stringify(likes), {
+            EX: 30 * 60, // expires in 30 minutes
+        });
+
+        return sendResponse(h, {
+            data: {
+                likes,
+            },
+        });
+    }
 };
 
 module.exports.postAlbumLikesHandler = async (req, h) => {
@@ -89,6 +115,9 @@ module.exports.postAlbumLikesHandler = async (req, h) => {
     const { id: userId } = req.auth.credentials;
 
     const action = await albumsService.toggleLikeAlbum({ albumId, userId });
+
+    // delete cache on every like/unlike action
+    await cacheService.del(cacheKeys.albumLikes(albumId));
 
     return sendResponse(h, {
         code: 201,
