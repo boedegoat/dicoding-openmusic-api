@@ -13,6 +13,7 @@ Sekali lagi, terima kasih kepada tim Dicoding atas kursusnya yang sangat berdagi
 setup `.env`
 
 ```env
+# postgresql
 PGHOST=
 PGUSER=
 PGDATABASE=
