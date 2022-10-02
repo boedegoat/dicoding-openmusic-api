@@ -4,9 +4,9 @@ Halo para reviewer 👋, senang sekali bisa ikut tergabung ke dalam komunitas di
 
 [GitHub Repo](https://github.com/boedegoat/dicoding-openmusic-api)
 
-Saya mencoba untuk membuat semua testing passed, namun karena saya masih pemula postgresql, mungkin ada beberapa code yang sudah bekerja dengan baik tapi belum sesuai dengan best practices. Untuk itu, Saran dan kritik dipersilahkan untuk membuat webserver ini jadi lebih baik lagi.
+Ini adalah hasil final project Openmusic API. Selama saya mengerjakan project ini, saya belajar banyak hal baru yang meliputi hapi framework, database postgresql, auth flow, message broker, dan redis caching. Saya tunggu kritik dan saran dari para reviewer.
 
-Sekian, Terimakasih 😀.
+Sekali lagi, terima kasih kepada tim Dicoding atas kursusnya yang sangat berdaging.
 
 ## Langkah menjalankan webserver openmusic api
 
@@ -23,6 +23,9 @@ PGPORT=
 ACCESS_TOKEN_KEY=
 ACCESS_TOKEN_AGE=
 REFRESH_TOKEN_KEY=
+
+# rabbitmq
+RABBITMQ_SERVER=
 ```
 
 kemudian jalankan command ini
